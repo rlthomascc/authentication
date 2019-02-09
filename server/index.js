@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.post('/users', (req, res) => {
+app.post('/signup', (req, res) => {
   const { body } = req;
   const { user, email, pass } = body;
 
@@ -92,6 +92,10 @@ app.post('/login', (req, res) => {
       res.status(404).end('Error: Invalid Password');
       console.log('Error: Invalid Password!');
     }
+    userSession.save({
+      userID: (users[0]._id).toString(),
+    });
+
     res.status(200).send({
       success: 'true',
       message: 'Valid sign in',
@@ -99,6 +103,62 @@ app.post('/login', (req, res) => {
     });
   });
 });
+
+app.get('/verify', (req, res) => {
+  //get the token;
+  const {token} = req.query;
+  //verify the token is one of a kind and its not deleted
+
+  userSession.find({
+    _id: token,
+    isDeleted: false,
+  }, (err, sessions) => {
+    if(err) {
+      res.status(400).send({
+        success: false,
+        message: 'Error: Server error!'
+      })
+    }
+    if (sessions.length != 1) {
+      res.status(400).send({
+        success: false,
+        message: 'Error: Invalid'
+      })
+    } else {
+      res.status(200).send({
+        success: true,
+        message: 'Good Token'
+      })
+    };
+  });
+});
+
+app.get('/logout', (req, res) => {
+  //get the token;
+  const {token} = req.query;
+  //verify the token is one of a kind and its not deleted
+
+  userSession.findOneAndUpdate({
+    _id: token,
+    isDeleted: false,
+  }, {
+    $set:{
+      isDeleted: true
+    }
+  }, null, (err, sessions) => {
+    if(err) {
+      res.status(400).send({
+        success: false,
+        message: 'Error: Server error!'
+      })
+    }
+    res.status(200).send({
+        success: true,
+        message: 'Good Token'
+      });
+  });
+});
+
 
 const port = process.env.PORT || 3000;
 

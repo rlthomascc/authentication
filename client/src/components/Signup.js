@@ -95,7 +95,7 @@ class Signup extends Component {
     e.preventDefault();
     $.ajax({
       method: 'POST',
-      url: '/users',
+      url: '/signup',
       datatype: 'json',
       data: {
         user: username,
