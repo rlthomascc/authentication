@@ -44,6 +44,7 @@ class Home extends Component {
     if (isLoading) {
       return (
         <div>
+          {/* loading */}
           <p>Loading...</p>
         </div>
       );
