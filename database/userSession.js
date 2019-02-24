@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 mongoose.connect('mongodb://localhost/clientPortal/newUser');
 
 const userSessionSchema = new mongoose.Schema({
+  email: { type: String, default: '' },
   userId: { type: String, default: '' },
   timestamp: { type: Date, default: Date.now() },
   isDeleted: { type: Boolean, default: false },
@@ -17,8 +18,9 @@ userSessionSchema.methods.validPassword = password => bcrypt.compareSync(passwor
 const userSession = mongoose.model('userSession', userSessionSchema);
 
 function save(e) {
-  console.log(e, 'SAVE FUNCTION')
+  console.log(e.userID)
   const obj = new userSession({
+    email: e.email,
     userId: e.userID,
   });
   obj.save();

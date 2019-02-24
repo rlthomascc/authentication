@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const newUser = require('../database/newUser');
-const userSession = require('../database/userSession');
+const session = require('../database/userSession');
 
 const app = express();
 
@@ -92,7 +92,8 @@ app.post('/login', (req, res) => {
       res.status(404).end('Error: Invalid Password');
       console.log('Error: Invalid Password!');
     }
-    userSession.save({
+    session.save({
+      email: Email,
       userID: (users[0]._id).toString(),
     });
 
@@ -108,21 +109,15 @@ app.get('/verify', (req, res) => {
   //get the token;
   const {token} = req.query;
   //verify the token is one of a kind and its not deleted
-
-  userSession.find({
-    _id: token,
+  session.userSession.find({
+    userId: token,
     isDeleted: false,
   }, (err, sessions) => {
     if(err) {
+      console.log('server error')
       res.status(400).send({
         success: false,
         message: 'Error: Server error!'
-      })
-    }
-    if (sessions.length != 1) {
-      res.status(400).send({
-        success: false,
-        message: 'Error: Invalid'
       })
     } else {
       res.status(200).send({

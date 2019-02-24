@@ -1,8 +1,7 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Route, HashRouter } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import { Route, HashRouter, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 
 const crypto = require('crypto');
@@ -91,7 +90,7 @@ class Signup extends Component {
   }
 
   handleSubmit(e) {
-    const { password, username, email } = this.state;
+    const { password, username, email, redirect } = this.state;
     e.preventDefault();
     $.ajax({
       method: 'POST',
@@ -103,6 +102,10 @@ class Signup extends Component {
         pass: password,
       },
       success: (data) => {
+        console.log('IM HERE')
+        this.setState({
+          redirect: 'home',
+        })
         console.log(data);
       },
       error: (err) => {
@@ -116,14 +119,14 @@ class Signup extends Component {
           alert(err.responseText);
         } else if (err.responseText === 'Error: Account already exists.') {
           alert(err.responseText);
+          this.setState({
+            redirect: 'login',
+          })
         } else {
-          console.log(err);
+          console.log(err, 'err');
         }
       },
     });
-    // this.setState({
-    //   redirect: 'home',
-    // });
   }
 
   signUp() {
@@ -204,15 +207,25 @@ class Signup extends Component {
     );
   }
 
-  render() {
+  renderView() {
     const { redirect } = this.state;
+    console.log(redirect, 'redirect');
     if (redirect === 'home') {
       return <Redirect to="/home" />;
+    }
+    if (redirect === 'login') {
+      return <Redirect to="/login" />
     }
     return (
       this.signUp()
 
     );
+  }
+
+  render() {
+    return (
+      this.renderView()
+    )
   }
 }
 
