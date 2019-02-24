@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { getFromStorage, setInStorage } from '../../utils/storage';
 import $ from 'jquery';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route, HashRouter, Redirect } from 'react-router-dom';
+import Signup from './Signup';
+import Login from './Login';
 
 class Home extends Component {
   constructor(props) {
@@ -15,48 +17,70 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const token = getFromStorage('the_main_app');
-    if (token) {
-      // Verify the token
-      fetch(`/verify?token=${token}`)
-      .then(res => res.json())
-      .then(json => {
-        if (json.success) {
+    const token = getFromStorage('token');
+    // const token = this.props.location.state.token
+    if (token.length > 1) {
+      //verify the token
+      $.ajax({
+        method: 'GET',
+        url: '/verify',
+        data: {
+          token: token
+        },
+        success: (data) => {
           this.setState({
             token: token,
             isLoading: false,
           })
-        } else {
+        }, 
+        error: (err) => {
           this.setState({
             isLoading: false,
           })
+          console.log(err, 'error')
+          return <Redirect to="/login" />
         }
-      });
-    } else {
-      this.setState({
-        isLoading: false,
-      });
+      })
     }
   }
 
+  logout() {
+    this.setState({
+      redirect: 'login',
+      token: '',
+    })
+  }
+
   homePage() {
-    const {isLoading} = this.state
+    const {isLoading, token} = this.state
     if (isLoading) {
       return (
         <div>
-          {/* loading */}
           <p>Loading...</p>
         </div>
       );
     }
-        return (
+    if (!token) {
+      return <Redirect to='/signup' />
+    }
+    if (token) {
+      return (
         <div id="logout">
-          <button type="submit" className="btn btn-danger btn-lg">Log Out</button>
+          <button type="submit" className="btn btn-danger btn-lg" onClick={(this.logout.bind(this))}>Log Out</button>
         </div>
-        );
+      )
+    }
+    console.log('ERROR')
   }
 
   render() {
+    const { redirect } = this.state
+    if (redirect === 'login') {
+      return <Redirect to="/login" />
+    }
+    if (redirect === '') {
+      return <Redirect to='/login' />
+    }
     return (
       this.homePage()
     );

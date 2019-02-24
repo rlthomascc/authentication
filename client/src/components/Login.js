@@ -3,7 +3,10 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable class-methods-use-this */
 import React, { Component } from 'react';
+import { Route, HashRouter, Redirect } from 'react-router-dom';
+import { getFromStorage, setInStorage } from '../../utils/storage';
 import $ from 'jquery';
+
 
 const crypto = require('crypto');
 
@@ -12,8 +15,9 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      redirect: '',
       password: '',
+      email: '',
       emailValid: 'is-invalid',
       passwordValid: 'is-invalid',
     };
@@ -46,6 +50,11 @@ class Login extends Component {
       },
       success: (data) => {
         console.log(data);
+        this.setState({
+          redirect: 'home',
+          token: data.token,
+        })
+        setInStorage('token', data.token)
       },
       error: (err) => {
         console.log(err);
@@ -140,6 +149,13 @@ class Login extends Component {
   }
 
   render() {
+    const {redirect, token} = this.state
+    if (redirect === 'home') {
+      return <Redirect to={{
+        pathname: "/home",
+        state: {token: token}
+      }} />
+    }
     return (
       this.login()
     );
