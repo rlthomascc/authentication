@@ -28,6 +28,7 @@ class Home extends Component {
           token: token
         },
         success: (data) => {
+          console.log(data, 'VERIFY DATAAAA')
           this.setState({
             token: token,
             isLoading: false,
@@ -45,14 +46,29 @@ class Home extends Component {
   }
 
   logout() {
+    const token = getFromStorage('token');
     this.setState({
       redirect: 'login',
       token: '',
+    })
+    $.ajax({
+      method: "PATCH",
+      url: '/logout',
+      data: {
+        token: token
+      },
+      success: (data) => {
+        console.log(data, 'data in patch')
+      },
+      error: (err) => {
+        console.log('err')
+      }
     })
   }
 
   homePage() {
     const {isLoading, token} = this.state
+    console.log(token, 'TOKEN IN HOMEPAGE')
     if (isLoading) {
       return (
         <div>

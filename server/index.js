@@ -113,7 +113,7 @@ app.get('/verify', (req, res) => {
     userId: token,
     isDeleted: false,
   }, (err, sessions) => {
-    if(err) {
+    if(sessions < 1) {
       console.log('server error')
       res.status(400).send({
         success: false,
@@ -128,31 +128,56 @@ app.get('/verify', (req, res) => {
   });
 });
 
-app.get('/logout', (req, res) => {
+app.patch('/logout', (req, res) => {
   //get the token;
-  const {token} = req.query;
+  const {token} = req.body;
   //verify the token is one of a kind and its not deleted
-
-  userSession.findOneAndUpdate({
-    _id: token,
+  session.userSession.findOneAndUpdate({
+    userId: token,
     isDeleted: false,
   }, {
-    $set:{
+    $set: {
       isDeleted: true
     }
   }, null, (err, sessions) => {
-    if(err) {
+    if (err) {
       res.status(400).send({
         success: false,
         message: 'Error: Server error!'
       })
     }
     res.status(200).send({
-        success: true,
-        message: 'Good Token'
-      });
-  });
-});
+      success: true,
+      message: 'Updated Token'
+    })
+  })
+})
+
+// app.get('/logout', (req, res) => {
+//   //get the token;
+//   const {token} = req.query;
+//   //verify the token is one of a kind and its not deleted
+
+//   userSession.findOneAndUpdate({
+//     _id: token,
+//     isDeleted: false,
+//   }, {
+//     $set:{
+//       isDeleted: true
+//     }
+//   }, null, (err, sessions) => {
+//     if(err) {
+//       res.status(400).send({
+//         success: false,
+//         message: 'Error: Server error!'
+//       })
+//     }
+//     res.status(200).send({
+//         success: true,
+//         message: 'Good Token'
+//       });
+//   });
+// });
 
 
 const port = process.env.PORT || 3000;
