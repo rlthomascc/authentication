@@ -153,31 +153,6 @@ app.patch('/logout', (req, res) => {
   })
 })
 
-// app.get('/logout', (req, res) => {
-//   //get the token;
-//   const {token} = req.query;
-//   //verify the token is one of a kind and its not deleted
-
-//   userSession.findOneAndUpdate({
-//     _id: token,
-//     isDeleted: false,
-//   }, {
-//     $set:{
-//       isDeleted: true
-//     }
-//   }, null, (err, sessions) => {
-//     if(err) {
-//       res.status(400).send({
-//         success: false,
-//         message: 'Error: Server error!'
-//       })
-//     }
-//     res.status(200).send({
-//         success: true,
-//         message: 'Good Token'
-//       });
-//   });
-// });
 
 
 const port = process.env.PORT || 3000;

@@ -28,7 +28,6 @@ class Home extends Component {
           token: token
         },
         success: (data) => {
-          console.log(data, 'VERIFY DATAAAA')
           this.setState({
             token: token,
             isLoading: false,
@@ -68,7 +67,6 @@ class Home extends Component {
 
   homePage() {
     const {isLoading, token} = this.state
-    console.log(token, 'TOKEN IN HOMEPAGE')
     if (isLoading) {
       return (
         <div>
