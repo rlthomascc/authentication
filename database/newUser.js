@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-mongoose.connect('mongodb://localhost/clientPortal/newUser');
+mongoose.connect('mongodb://localhost/authentication/newUser');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

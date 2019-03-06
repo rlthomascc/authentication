@@ -18,6 +18,7 @@ class Home extends Component {
 
   componentDidMount() {
     const token = getFromStorage('token');
+    console.log(token, 'token')
     // const token = this.props.location.state.token
     if (token.length > 1) {
       //verify the token
@@ -90,9 +91,11 @@ class Home extends Component {
   render() {
     const { redirect } = this.state
     if (redirect === 'login') {
+      location.reload()
       return <Redirect to="/login" />
     }
     if (redirect === '') {
+      location.reload()
       return <Redirect to='/login' />
     }
     return (

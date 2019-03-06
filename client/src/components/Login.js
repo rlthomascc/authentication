@@ -151,6 +151,7 @@ class Login extends Component {
   render() {
     const {redirect, token} = this.state
     if (redirect === 'home') {
+      location.reload()
       return <Redirect to={{
         pathname: "/home",
         state: {token: token}
