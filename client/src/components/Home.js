@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { getFromStorage, setInStorage } from '../../utils/storage';
+import { getFromStorage } from '../../utils/storage';
 import $ from 'jquery';
-import { Route, HashRouter, Redirect } from 'react-router-dom';
-import Signup from './Signup';
-import Login from './Login';
+import {  Redirect } from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
