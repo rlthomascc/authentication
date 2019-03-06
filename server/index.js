@@ -113,18 +113,19 @@ app.get('/verify', (req, res) => {
     userId: token,
     isDeleted: false,
   }, (err, sessions) => {
+    console.log(sessions)
     if(sessions < 1) {
-      console.log('server error')
-      res.status(400).send({
-        success: false,
-        message: 'Error: Server error!'
-      })
-    } else {
-      res.status(200).send({
+      console.log('sessions too small')
+          console.log('server error')
+          return res.status(404).send({
+            success: false,
+            message: 'Error: Server error!'
+          })
+    }
+     return res.status(200).send({
         success: true,
         message: 'Good Token'
       })
-    };
   });
 });
 
@@ -132,6 +133,7 @@ app.patch('/logout', (req, res) => {
   //get the token;
   const {token} = req.body;
   //verify the token is one of a kind and its not deleted
+  console.log(token, 'IN LOGOUT')
   session.userSession.findOneAndUpdate({
     userId: token,
     isDeleted: false,
@@ -140,13 +142,14 @@ app.patch('/logout', (req, res) => {
       isDeleted: true
     }
   }, null, (err, sessions) => {
+    console.log(sessions)
     if (err) {
-      res.status(400).send({
+      res.send({
         success: false,
         message: 'Error: Server error!'
       })
     }
-    res.status(200).send({
+    res.send({
       success: true,
       message: 'Updated Token'
     })

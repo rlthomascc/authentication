@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-mongoose.connect('mongodb://localhost/clientPortal/newUser');
+mongoose.connect('mongodb://localhost/authentication/newUser');
 
 const userSessionSchema = new mongoose.Schema({
   email: { type: String, default: '' },
