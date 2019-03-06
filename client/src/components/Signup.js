@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { Route, HashRouter, Redirect } from 'react-router-dom';
+import { getFromStorage, setInStorage } from '../../utils/storage';
 import $ from 'jquery';
 
 const crypto = require('crypto');
@@ -102,11 +103,11 @@ class Signup extends Component {
         pass: password,
       },
       success: (data) => {
-        console.log('IM HERE')
-        this.setState({
-          redirect: 'home',
-        })
         console.log(data);
+        setInStorage('token', data.token)
+          this.setState({
+            redirect: 'home',
+          })
       },
       error: (err) => {
         if (err.responseText === 'Error: Username can not be blank.') {
@@ -209,9 +210,8 @@ class Signup extends Component {
 
   renderView() {
     const { redirect } = this.state;
-    console.log(redirect, 'redirect');
     if (redirect === 'home') {
-      location.reload()
+      // location.reload()
       return <Redirect to="/home" />;
     }
     if (redirect === 'login') {

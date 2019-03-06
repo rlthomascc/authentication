@@ -58,10 +58,10 @@ app.post('/signup', (req, res) => {
                 userID: data,
               });
               //return status code success
-              return res.status(200).send({
-                success: 'true',
-                message: 'Valid sign up and sign in',
-                token: data.toString()
+                return res.status(200).send({
+                  success: 'true',
+                  message: 'Valid sign up and sign in',
+                  token: data.toString()
               });
             }
             // 2. Save
@@ -127,9 +127,7 @@ app.get('/verify', (req, res) => {
     userId: token,
     isDeleted: false,
   }, (err, sessions) => {
-    console.log(sessions)
     if(sessions < 1) {
-      console.log('sessions too small')
           console.log('server error')
           return res.status(404).send({
             success: false,
@@ -147,7 +145,6 @@ app.patch('/logout', (req, res) => {
   //get the token;
   const {token} = req.body;
   //verify the token is one of a kind and its not deleted
-  console.log(token, 'IN LOGOUT')
   session.userSession.findOneAndUpdate({
     userId: token,
     isDeleted: false,
@@ -156,7 +153,6 @@ app.patch('/logout', (req, res) => {
       isDeleted: true
     }
   }, null, (err, sessions) => {
-    console.log(sessions)
     if (err) {
       res.send({
         success: false,
