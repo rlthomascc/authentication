@@ -1,8 +1,8 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Route, HashRouter, Redirect } from 'react-router-dom';
-import { getFromStorage, setInStorage } from '../../utils/storage';
+import { Redirect } from 'react-router-dom';
+import { setInStorage } from '../../utils/storage';
 import $ from 'jquery';
 
 const crypto = require('crypto');

@@ -3,8 +3,8 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable class-methods-use-this */
 import React, { Component } from 'react';
-import { Route, HashRouter, Redirect } from 'react-router-dom';
-import { getFromStorage, setInStorage } from '../../utils/storage';
+import { Redirect } from 'react-router-dom';
+import { setInStorage } from '../../utils/storage';
 import $ from 'jquery';
 
 
