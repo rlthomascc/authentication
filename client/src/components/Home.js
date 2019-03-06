@@ -18,7 +18,6 @@ class Home extends Component {
 
   componentDidMount() {
     const token = getFromStorage('token');
-    console.log(token, 'token')
     // const token = this.props.location.state.token
     if (token.length > 1) {
       //verify the token
