@@ -24,14 +24,16 @@ userSchema.methods.validPassword = password => bcrypt.compareSync(password, this
 const User = mongoose.model('User', userSchema);
 
 
-function save(e) {
+function save(e, cb) {
   const obj = new User({
     username: e.username,
     email: e.emailAddress,
     password: userSchema.methods.generateHash(e.password),
     // password: e.password,
   });
-  obj.save();
+  obj.save((err, user) => {
+    cb(user._doc._id)
+  });
   console.log('Data saved to MongoDB Database');
 }
 

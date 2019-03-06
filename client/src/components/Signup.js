@@ -211,6 +211,7 @@ class Signup extends Component {
     const { redirect } = this.state;
     console.log(redirect, 'redirect');
     if (redirect === 'home') {
+      location.reload()
       return <Redirect to="/home" />;
     }
     if (redirect === 'login') {

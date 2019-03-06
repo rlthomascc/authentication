@@ -50,13 +50,27 @@ app.post('/signup', (req, res) => {
             res.status(400).end('Error: Account already exists.');
             console.log('Error: Account already exists.');
           } else {
+            //callback function with saved id
+            function bringDataBack(data) {
+              //create userSession
+              session.save({
+                email: email,
+                userID: data,
+              });
+              //return status code success
+              return res.status(200).send({
+                success: 'true',
+                message: 'Valid sign up and sign in',
+                token: data.toString()
+              });
+            }
             // 2. Save
             newUser.save({
               username: user,
               emailAddress: email.toLowerCase(),
               password: pass,
-            });
-            res.send('Account Created Successfully');
+            }, bringDataBack);
+            // res.send('Account Created Successfully');
           }
         });
       }
